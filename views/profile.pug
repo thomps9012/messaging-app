@@ -1,0 +1,20 @@
+extends layout
+
+block content
+    .container
+        h3= "Welcome "
+            span.profile_banner(value="user_name")
+        form
+            input#user_name(type="hidden", value=user_name)
+        .online_users
+        script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.min.js")
+        script(src="https://code.jquery.com/jquery-3.6.1.js"
+  integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+  crossorigin="anonymous") 
+
+    script.
+        const socket = io();
+        const user_name = $('#user_name').val()
+        socket.emit("login", user_name)
+        socket.emit("get_users")
+       

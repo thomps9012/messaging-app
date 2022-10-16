@@ -1,0 +1,31 @@
+extends layout 
+
+block content
+    ul.messages
+    form(action="")
+        input#user_name(type="hidden", value=user_name)
+        input#msg_receiver(type="hidden", value=receiver)
+        input.message(autocomplete="off")
+        button.send_msg Send
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.min.js")
+    script(src="https://code.jquery.com/jquery-3.6.1.js"
+  integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI="
+  crossorigin="anonymous")
+
+  script.
+    const name = $("#user_name").val();
+    const receiver = $("#msg_receiver").val();
+
+    const socket = io();
+    
+    socket.emit("user_name", user_name)
+        socket.emit("receiver", receiver)
+    
+    $("form").submit(() => {
+        socket.emit("chat_message", $(".message").val());
+        $(".message").val("")
+        return false;
+    });
+    socket.on("chat_message", (msg) => {
+        $(".messages").append($("<li>").text(msg));
+    })
